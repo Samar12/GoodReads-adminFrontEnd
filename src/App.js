@@ -5,96 +5,95 @@ import "./App.scss";
 import UpperNavBar from "./components/Navbar/upperNav";
 import Home from "./components/Home/home";
 import Login from "./components/Login/login";
-import AdminHome from "./components/Admin/Home/adminHome";
+import AdminDashBoard from "./components/Admin/Home/AdminDashBoard";
 import { categories, myBooks, authors } from "./data/data";
+import {AuthorInfo,DeleteAuthorInfo,AddNewAuthor,EditAuthorInfo} from './API/Author';
+import {CategoryiesInfo,AddNewCategory,DeleteCategoryInfo,EditCategoryInfo} from './API/Categories';
 
 export const MyContext = React.createContext();
 class App extends React.Component {
   state = {
-    Categories: {
-      header: ["ID", "Name", "Action"],
-      body: categories
-    },
+    Categories : {
+      th: ['ID', 'Name','Action'],
+      tbody: [
+        // {ID:1,Name: 'Engineering',deleted:false},
+        // {ID:2,Name: 'discover',deleted:false}         
+   ]},
+   Books : {
+    th: ['ID', 'photo','Name','CategoryId','AuthorId','Action'],
+    tbody: [
+      // {ID:1,photo: 'https://greenido.files.wordpress.com/2017/11/ray-dalio-principles-angled-book-ab1a2ff6c873144e545e21f9827a99a14d71bc635f6505ec17ee17bdf59ec742.png',Name:'Animals',CategoryId:1,AuthorId:1,deleted:false , description: "description Book 111111"},
+      // {ID:2,photo: 'https://greenido.files.wordpress.com/2017/11/ray-dalio-principles-angled-book-ab1a2ff6c873144e545e21f9827a99a14d71bc635f6505ec17ee17bdf59ec742.png',Name:'Building',CategoryId:2,AuthorId:2,deleted:false , description: "description Book 2222"},
+      // {ID:3,photo: 'https://greenido.files.wordpress.com/2017/11/ray-dalio-principles-angled-book-ab1a2ff6c873144e545e21f9827a99a14d71bc635f6505ec17ee17bdf59ec742.png',Name:'Programming',CategoryId:3,AuthorId:3,deleted:false , description: "description Book 33333"},             
+ ]
+},
     Authors: {
-      header: ["ID", "Photo", "Name", "DateOfBirth", "Action"],
-      body: authors
+      th:['ID' , 'photo' , 'FirstName' , 'LastName' , 'DateOfBirth', 'Action'],
+
+      tbody: []
     }
   };
-  deleteCategory = id => {
-    const deletedCat = this.state.Categories.body.filter(c => c.id !== id);
-    this.setState({ Categories: { header: ["ID", "Name", "Action"], body: deletedCat } });
-  };
+ 
 
-  addCategory = Category => {
-    const { body } = this.state.Categories;
-    this.setState({
-      Categories: {
-        ...this.state.Categories,
-        body: body.concat(Category)
-      }
-    });
-  };
-  EditCategory = (CatID, CatN) => {
-    const category = this.state.Categories.body.find(c => c.id === CatID);
-    category.name = CatN;
-  };
-  searchCategory = name => {
-    const { Categories } = this.state;
-    let result = false;
-    for (var i = 0; i < Categories["body"].length; i++) {
-      if (Categories.body[i].name.toLowerCase() === name.toLowerCase()) {
-        result = true;
-      }
-    }
-    return result;
-  };
+//-------------Books------------------------------//
 
-  // //////////////////////////////////////////////////////////////////////////////////////////
+ 
+//---------------Categories---------------------------//
+AddCategory=(Category)=>{
+AddNewCategory(Category,this);
+}
 
-  deleteAuthor = id => {
-    const deletedAuthorId = this.state.Authors.body.filter(a => a.id !== id);
-    this.setState({ Authors: { header: ["ID", "Photo", "Name", "DateOfBirth", "Action"], body: deletedAuthorId } });
-  };
+DeleteCategory=(CategoryID)=>{
+DeleteCategoryInfo(CategoryID,this);
+}
+  
+EditCategory=(CategoryID, NewValues)=>{
+EditCategoryInfo(CategoryID,NewValues,this);
+}
 
-  addAuthor = author => {
-    const { body } = this.state.Authors;
-    this.setState({
-      Authors: {
-        ...this.state.Authors,
-        body: body.concat(author)
-      }
-    });
-  };
-  editAuthor = (id, name) => {
-    const author = this.state.Authors.body.filter(e => e.id != id);
-    author[0].name = name;
-  };
 
-  searchAuthor = name => {
-    const { Authors } = this.state;
-    let result = false;
-    for (var i = 0; i < Authors.length; i++) {
-      if (Authors.body[i].name.toLowerCase()) {
-        result = true;
-      }
-    }
-    return result;
-  };
 
+  // -----------Author----------------------------------//
+
+
+  componentDidMount(){
+    CategoryiesInfo(this);
+    AuthorInfo(this);
+  }
+  AddNewAuthor=(Author)=>{
+    AddNewAuthor(Author,this)
+  }
+  
+  EditAuthor=(AuthorID, NewValues)=>{
+  EditAuthorInfo(AuthorID,NewValues,this);
+  }
+  
+  DeleteAuthor=(AuthorID)=>{
+  DeleteAuthorInfo(AuthorID,this);
+  }
+  
   // /////////////////////////////////////////////////////////////////////////////////////////
+
 
   render() {
     const value = {
       state: this.state,
-      addCategory: this.addCategory,
-      deleteCategory: this.deleteCategory,
-      editCategory: this.EditCategory,
-      searchCategory: this.searchCategory,
-      addAuthor: this.addAuthor,
-      deleteAuthor: this.deleteAuthor,
-      editAuthor: this.editAuthor,
-      searchAuthor: this.searchAuthor,
-      MyCategories: categories,
+      // addCategory: this.addCategory,
+      // deleteCategory: this.deleteCategory,
+      // editCategory: this.EditCategory,
+      // searchCategory: this.searchCategory,
+      
+      AddNewAuthor:this.AddNewAuthor,
+      EditAuthor:this.EditAuthor,
+      DeleteAuthor:this.DeleteAuthor,
+
+     
+      AddCategory:this.AddCategory,
+      DeleteCategory :this.DeleteCategory,
+      EditCategory:this.EditCategory,
+
+
+      // MyCategories: categories,
       myBooks: myBooks,
       authors: authors
     };
@@ -108,8 +107,8 @@ class App extends React.Component {
               <Switch>
                 <Route path="/" exact component={Home} />
                 <Route path="/login" exact component={Login} />
+                <Route path="/Admin" exact component={AdminDashBoard} />
 
-                <Route path="/admin" exact component={AdminHome} />
               </Switch>
             </>
           </Router>
