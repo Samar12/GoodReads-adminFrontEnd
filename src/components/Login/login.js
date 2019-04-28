@@ -25,6 +25,7 @@ class Login extends React.Component {
         .then(res => {
           // debugger;
           localStorage.setItem("adminToken", res.adminToken);
+          console.log(res.adminToken);
           getAdminProfile()
             .then(res => {})
             .catch(err => {

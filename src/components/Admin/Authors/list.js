@@ -132,13 +132,13 @@ export class AuthorList extends React.Component {
                 <Form>
                   <Form.Group as={Col} controlId="formBasicbook">
                     <h3>{this.state.error}</h3>
-                    <Form.Control ref={e => (this.name = e)} type="text" placeholder="Enter Name..." />
+                    <Form.Control ref={element => (this.name = element)} type="text" placeholder="Enter Name..." />
                   </Form.Group>
                   <Form.Group as={Col} controlId="formBasicbook">
-                    <Form.Control ref={e => (this.DOB = e)} type="date" />
+                    <Form.Control ref={element => (this.DOB = element)} type="date" />
                   </Form.Group>
                   <Form.Group as={Col}>
-                    <Form.Control type="file" ref={e => (this.photo = e)} />
+                    <Form.Control type="file" ref={element => (this.photo = element)} />
                   </Form.Group>
                 </Form>
               </Modal.Body>
